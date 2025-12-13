@@ -1,0 +1,30 @@
+﻿@model SupplierViewModel
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>هل انت متأكد انك تريد حذف @Model.FullName؟</h1>
+<div asp-validation-summary="All"></div>
+
+<form asp-action="Delete">
+    <div class="form-group">
+        <label class="col-form-label" asp-for="Id"></label>
+        <input readonly class="form-control" asp-for="Id" />
+    </div>
+    <div class="form-group">
+        <label class="col-form-label" asp-for="FullName"></label>
+        <input readonly class="form-control" asp-for="FullName" />
+    </div>
+    <div class="form-group">
+        <label class="col-form-label" asp-for="PhoneNumber"></label>
+        <input readonly class="form-control" asp-for="PhoneNumber" />
+    </div>
+    <div class="form-group">
+        <label class="col-form-label" asp-for="Email"></label>
+        <input readonly class="form-control" asp-for="Email" />
+    </div>
+    <br />
+    <input type="submit" value="حذف" class="btn btn-danger" />
+    <a asp-action="Index" class="btn btn-light">العودة الي القائمة</a>
+</form>
+

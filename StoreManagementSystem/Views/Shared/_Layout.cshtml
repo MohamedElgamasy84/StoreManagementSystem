@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - StoreManagementSystem</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/StoreManagementSystem.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <header>
+
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-1">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">مخزن</a>
+                @* <form class="d-flex ms-3" asp-action="Index">
+                    <div class="input-group">
+                        <input class="form-control" type="text" name="SearchValue" placeholder="ماالذي تبحث عنه؟" />
+                        <button type="submit" class="btn btn-info">بحث</button>
+                    </div>
+                </form> *@
+                <img src="~/Files/Images/makhzn.png" alt="makhzn" width="90" />
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+
+            </div>
+
+        </nav>
+
+
+    </header>
+
+    <div class="d-flex">
+        <div class="sidebar bg-light border-end p-2" style="width: 110px; min-height: 100vh; position: fixed; right: 0; padding-top: 70px;">
+            
+                <a href="@Url.Action("Index", "Home")" class="btn btn-outline-primary my-1 w-100 text-start">الرئيسية</a>
+                <a href="@Url.Action("Index", "Product")" class="btn btn-outline-secondary my-1 w-100 text-start">الاصناف</a>
+                <a href="@Url.Action("Index", "Category")" class="btn btn-outline-secondary my-1 w-100 text-start">التصنيفات</a>
+                <a href="@Url.Action("Index", "Supplier")" class="btn btn-outline-secondary my-1 w-100 text-start">الموردين</a>
+                <a href="@Url.Action("Index", "Customer")" class="btn btn-outline-secondary my-1 w-100 text-start">العملاء</a>
+                <a href="@Url.Action("Index", "PurchaseOrder")" class="btn btn-outline-secondary my-1 w-100 text-start">المشتريات</a>
+                <a href="@Url.Action("Index", "SalesOrder")" class="btn btn-outline-secondary my-1 w-100 text-start">المبيعات</a>
+                <a href="@Url.Action("Settings", "Home")" class="btn btn-outline-secondary my-1 w-100 text-start">الإعدادات</a>
+            
+        </div>
+
+        <div class="flex-grow-1" style="margin-right:200px; padding:20px;">
+            @RenderBody()
+        </div>
+    </div>
+    
+
+   
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("ValidationScriptSection", required: false)
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

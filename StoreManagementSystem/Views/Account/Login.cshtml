@@ -1,0 +1,44 @@
+﻿@model LoginViewModel
+@{
+    ViewData["Title"] = "تسجيل الدخول";
+}
+
+<h1>تسجيل الدخول</h1>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-4">
+                    <h3 class="text-center mb-4">🔐 تسجيل الدخول</h3>
+
+                    <form asp-action="Login" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Username" class="form-label">اسم المستخدم</label>
+                            <input asp-for="Username" class="form-control" placeholder="اسم المستخدم" />
+                            <span asp-validation-for="Username" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Password" class="form-label">كلمة المرور</label>
+                            <input asp-for="Password" class="form-control" type="password" placeholder="••••••" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input type="checkbox" class="form-check-input" id="RememberMe" />
+                            <label class="form-check-label" for="RememberMe">تذكرني</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 rounded-3">تسجيل الدخول</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,23 @@
+﻿@model CustomerViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>تفاصيل @Model.FullName</h1>
+
+<div class="form-group">
+    <label class="col-form-label" asp-for="Id"></label>
+    <input readonly class="form-control" asp-for="Id" />
+</div>
+<div class="form-group">
+    <label class="col-form-label" asp-for="FullName"></label>
+    <input readonly class="form-control" asp-for="FullName" />
+</div>
+<div class="form-group">
+    <label class="col-form-label" asp-for="PhoneNumber"></label>
+    <input readonly class="form-control" asp-for="PhoneNumber" />
+</div>
+
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">تعديل</a>
+<a asp-action="Index" class="btn btn-light">العودة الي القائمة</a>

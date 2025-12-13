@@ -1,0 +1,212 @@
+﻿@model PurchaseOrderCreateViewModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>فاتورة شراء جديدة</h1>
+<form asp-action="Create" >
+    <div class="form-group">
+        <label asp-for="SupplierId" class="col-form-label">المورد</label>
+        <select asp-for="SupplierId" class="form-control" asp-items="ViewBag.Suppliers">
+            <option value="">-- اختر المورد --</option>
+        </select>
+        <span asp-validation-for="SupplierId" class="text-danger"></span>
+
+    </div>
+    <div class="form-group">
+        <label asp-for="PurchaseOrderDate" class="form-label">التاريخ</label>       
+        <input class="form-control" asp-for="PurchaseOrderDate" />
+        <span asp-validation-for="PurchaseOrderDate" class="text-danger"></span>
+    </div>
+    <br />
+    <h4>تفاصيل المنتجات</h4>
+    <table class="table table-bordered text-center" id="detailsTable">
+        <thead class="table-dark">
+            <tr>
+                <td>المنتج</td>
+                <td>الوحده</td>
+                <td>الكميه</td>
+                <td>سعر الوحدة</td>
+                <td>الاجمالي</td>
+                <td>حذف</td>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Details != null && Model.Details.Any())
+            {
+                for (int i = 0; i < Model.Details.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            <select class="form-control" name="Items[@i].ProductId">
+                                <option value="">اختر منتج</option>
+                                @foreach (var p in ViewBag.Products)
+                                {
+                                    <option value="@p.Value">@p.Text</option>
+                                }
+                            </select>
+                        </td>
+
+                        <td>
+                            <select class="form-control" name="Items[@i].ProductUnitId">
+                                <option value="">اختر وحدة</option>
+                            </select>
+                        </td>
+
+
+                        <td>
+                            <input class="form-control quantity" name="Items[@i].Quantity" value="1" />
+                        </td>
+                        <td>
+                            <input class="form-control unit-price" name="Items[@i].UnitPrice" readonly />
+                        </td>
+
+                       
+
+                        <td class="line-total">0</td>
+
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm remove-row">x</button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <button type="button" id="addRow" class="btn btn-secondary">+ إضافة منتج</button>
+    <div>
+        <label asp-for="TotalAmount" class="form-label">الإجمالي الكلي</label>
+        <input asp-for="TotalAmount" class="form-control" readonly id="totalAmount" />
+    </div>
+    <br />
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">حفظ الفاتورة</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">إلغاء</a>
+    </div>
+
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        document.getElementById("addRow").addEventListener("click", function () {
+             const tableBody = document.querySelector("#detailsTable tbody");
+             const index = tableBody.rows.length;
+
+             const row = `
+                 <tr>
+                     <td>
+                         <select class="form-control" name="Items[${index}].ProductId">
+                             <option value="">اختر منتج</option>
+                             @foreach (var p in ViewBag.Products)
+                             {
+                 <option value="@p.Value">@p.Text</option>
+                                 }
+                         </select>
+                     </td>
+
+                     <td>
+                         <select class="form-control" name="Items[${index}].ProductUnitId">
+                             <option value="">اختر وحدة</option>
+                         </select>
+                     </td>
+
+
+                     <td>
+                         <input class="form-control quantity" name="Items[${index}].Quantity" value="1" />
+                     </td>
+
+                     <td>
+                         <input class="form-control unit-price" name="Items[${index}].UnitPrice" readonly />
+                     </td>
+                    
+
+                     <td class="line-total">0</td>
+
+                     <td>
+                         <button type="button" class="btn btn-danger btn-sm remove-row">X</button>
+                     </td>
+                 </tr>
+             `;
+
+             tableBody.insertAdjacentHTML("beforeend", row);
+         });
+
+         // -----------------------------
+         // حذف صف
+         // -----------------------------
+         document.addEventListener("click", function (e) {
+             if (e.target.classList.contains("remove-row")) {
+                 e.target.closest("tr").remove();
+                 calculateTotal();
+             }
+         });
+
+         // تحميل الوحدات حسب المنتج
+         document.addEventListener("change", function (e) {
+             if (e.target.matches("select[name*='ProductId']")) {
+
+                 const row = e.target.closest("tr");
+                 const productId = e.target.value;
+                 const unitSelect = row.querySelector("select[name*='ProductUnitId']");
+                 const priceInput = row.querySelector(".unit-price");
+
+                 unitSelect.innerHTML = "<option>تحميل...</option>";
+                 priceInput.value = "";
+
+                 if (productId) {
+                     fetch(`/SalesOrder/GetUnitsByProduct?productId=${productId}`)
+                         .then(res => res.json())
+                         .then(data => {
+                             unitSelect.innerHTML = `<option value="">اختر وحدة</option>`;
+                             data.forEach(u => {
+                                  unitSelect.innerHTML += `<option value="${u.unitId}" data-price="${u.salePrice}">${u.unitName}</option>`;
+                                 });
+                         });
+                 }
+             }
+         });
+
+         // عند اختيار الوحدة → ضيف السعر
+         document.addEventListener("change", function (e) {
+             if (e.target.matches("select[name*='ProductUnitId']")) {
+
+                 const row = e.target.closest("tr");
+                 const selected = e.target.selectedOptions[0];
+                 const price = selected.getAttribute("data-price");
+
+                 row.querySelector(".unit-price").value = price ?? 0;
+
+                 calculateRow(row);
+                 calculateTotal();
+             }
+         });
+
+         // حساب السطر
+         document.addEventListener("input", function (e) {
+             if (e.target.classList.contains("quantity") || e.target.classList.contains("discount")) {
+                 const row = e.target.closest("tr");
+                 calculateRow(row);
+                 calculateTotal();
+             }
+         });
+
+         function calculateRow(row) {
+             const qty = parseFloat(row.querySelector(".quantity").value) || 0;
+             const price = parseFloat(row.querySelector(".unit-price").value) || 0;
+
+             const total = (qty * price);
+
+             row.querySelector(".line-total").textContent = total.toFixed(2);
+         }
+
+         function calculateTotal() {
+             let sum = 0;
+             document.querySelectorAll(".line-total").forEach(c => {
+                 sum += parseFloat(c.textContent) || 0;
+             });
+             document.getElementById("totalAmount").value = sum.toFixed(2);
+         }
+    </script>
+}

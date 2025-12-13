@@ -1,0 +1,54 @@
+﻿@model PurchaseOrderViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>تفاصيل الفاتورة</h1>
+<div>
+    <label class="col-form-label" asp-for="Id">رقم الفاتورة</label>
+    <input readonly class="form-control" asp-for="Id" />
+</div>
+<div>
+    <label class="col-form-label" asp-for="SupplierFullName">اسم المورد</label>
+    <input readonly class="form-control" asp-for="SupplierFullName" />
+</div>
+<div>
+    <label class="col-form-label" asp-for="PurchaseOrderDate">تاريخ الفاتورة</label>
+    <input readonly class="form-control" asp-for="PurchaseOrderDate" />
+</div>
+<div>
+    <label class="col-form-label" asp-for="TotalAmount">المجموع الكلي</label>
+    <input readonly class="form-control" asp-for="TotalAmount" />
+</div>
+<h4>تفاصيل المنتجات</h4>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>المنتج</th>
+            <th>الكمية</th>
+            <th>سعر الوحدة</th>
+            <th>الإجمالي</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Details)
+        {
+            <tr>
+                <td>@item.ProductName</td>
+                <td>@item.Quantity</td>
+                <td>@item.UnitCost</td>
+                <td>@(item.Quantity* item.UnitCost)</td>
+                
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3" class="text-end fw-bold">:الإجمالي الكلي</td>
+            <td class="fw-bold">
+                @Model.Details.Sum(d => d.Quantity * d.UnitCost)
+            </td>
+        </tr>
+    </tfoot>
+</table>
+<a asp-action="Index" class="btn btn-secondary">رجوع</a>

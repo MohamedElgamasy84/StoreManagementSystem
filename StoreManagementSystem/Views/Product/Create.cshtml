@@ -1,0 +1,113 @@
+﻿@model ProductCreateViewModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>اضافة منتج</h1>
+<br />
+<div class="container">
+
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
+        <input asp-for="ImageName" hidden />
+        <div class="form-group">
+            <label class="col-form-label" asp-for="Name"></label>
+            <input class="form-control" asp-for="Name" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="col-form-label" asp-for="Image"></label>
+            <input class="form-control" asp-for="Image" />
+            <span asp-validation-for="Image" class="text-danger"></span>
+        </div>
+      
+        <div class="form-group">
+            <label class="col-form-label" asp-for="CostPrice"></label>
+            <input class="form-control" asp-for="CostPrice" />
+            <span asp-validation-for="CostPrice" class="text-danger"></span>
+        </div>
+       
+        <div class="form-group">
+            <label class="col-form-label" asp-for="CategoryId">التصنيف</label>
+            <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories">
+                <option value="">-- اختر التصنيف --</option>
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+        <br />
+        <select id="unitSelectTemplate" class="d-none">
+            <option value="">اختر وحدة</option>
+            @foreach (var u in ViewBag.Units as SelectList)
+            {
+                <option value="@u.Value">@u.Text</option>
+            }
+        </select>
+        <h4>تفاصيل المنتجات</h4>
+        <table class="table table-bordered text-center" id="UnitsTable">
+            <thead class="table-dark">
+                <tr>
+                    <td>الوحده</td>
+                    <td>factor</td>
+                    <td>سعرالبيع</td>
+                    <td>ازالة</td>
+                    
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+
+        </table>
+        <button type="button" id="addRow" class="btn btn-secondary">+ إضافة وحدة</button>
+        <br />
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">اضافة المنتج</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">إلغاء</a>
+        </div>
+     
+    </form>
+
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+       
+    <script>
+
+       
+                       let unitIndex = 0;
+
+                document.getElementById("addRow").addEventListener("click", () => {
+                    const unitOptions = document.getElementById("unitSelectTemplate").innerHTML;
+
+                    const row = `
+                    <tr>
+                        <td>
+                            <select name="Units[${unitIndex}].UnitId" class="form-control">
+                                ${unitOptions}
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number" name="Units[${unitIndex}].Factor" class="form-control" step="0.01" />
+                        </td>
+                        <td>
+                            <input type="number" name="Units[${unitIndex}].SalePrice" class="form-control" step="0.01" />
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger btnRemove">X</button>
+                        </td>
+                    </tr>`;
+
+                    document.querySelector("#UnitsTable tbody").insertAdjacentHTML("beforeend", row);
+                    unitIndex++;
+                });
+
+        // إزالة صف
+        document.addEventListener("click", function (e) {
+            if (e.target.classList.contains("btnRemove")) {
+                e.target.closest("tr").remove();
+            }
+        });
+
+    </script>
+}
+    
+</div>

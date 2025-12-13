@@ -1,0 +1,42 @@
+﻿@model ProductDetailViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>تفاصيل ال @Model.Name</h1>
+@if (Model.ImageName is not null)
+{
+    <div>
+        <img src="~/Files/Images/@Model.ImageName" class="rounded" height="100" width="100" />
+        <input asp-for="ImageName" hidden />
+    </div>
+
+}
+<div class="form-group">
+    <label class="col-form-label" asp-for="Id" ></label>
+    <input readonly class="form-control" asp-for="Id" />
+</div>
+<div class="form-group">
+    <label class="col-form-label" asp-for="Name" ></label>
+    <input readonly class="form-control" asp-for="Name" />
+</div>
+<div class="form-group">
+    <label class="col-form-label" asp-for="Quantity" ></label>
+    <input readonly class="form-control" asp-for="Quantity" />
+</div>
+@* <div class="form-group">
+    <label class="col-form-label" asp-for="Units" ></label>
+    <input readonly class="form-control" asp-for="Units" />
+</div> *@
+
+<div class="form-group">
+    <label class="col-form-label" asp-for="CostPrice" ></label>
+    <input readonly class="form-control" asp-for="CostPrice" />
+</div>
+<div class="form-group">
+    <label class="col-form-label" asp-for="CategoryName" ></label>
+    <input readonly class="form-control" asp-for="CategoryName" />
+</div>
+<br />
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">تعديل</a>
+<a asp-action="Index" class="btn btn-light">العودة الي القائمة</a>

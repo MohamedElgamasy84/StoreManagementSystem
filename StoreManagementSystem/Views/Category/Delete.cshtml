@@ -1,0 +1,32 @@
+﻿@model CategoryViewModel
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>هل انت متأكد انك تريد حذف هذا التصنيف</h1>
+<div asp-validation-summary="All"></div>
+
+<form asp-action="Delete">
+    @if (Model.ImageName is not null)
+    {
+        <div>
+            <img src="~/Files/Images/@Model.ImageName" class="rounded" height="100" width="100" />
+            <input asp-for="ImageName" hidden />
+        </div>
+
+    }
+    <div class="form-group">
+        <label class="col-form-label" asp-for="Id"></label>
+        <input readonly class="form-control" asp-for="Id" />
+    </div>
+    <div class="form-group">
+        <label class="col-form-label" asp-for="Name"></label>
+        <input readonly class="form-control" asp-for="Name" />
+    </div>
+    
+
+    <br />
+    <input type="submit" value="حذف" class="btn btn-danger" />
+    <a asp-action="Index" class="btn btn-light">العودة الي القائمة</a>
+</form>
+

@@ -1,0 +1,27 @@
+﻿@model CategoryCreateViewModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>اضافة تصنيف</h1>
+<br />
+<div class="container">
+    <form asp-action="Create" enctype="multipart/form-data">
+        <input asp-for="ImageName" hidden />
+        <div class="form-group">
+            <label class="col-form-label" asp-for="Name" ></label>
+            <input class="form-control" asp-for="Name"/>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="col-form-label" asp-for="Image" ></label>
+            <input class="form-control" asp-for="Image"/>
+        </div>
+        <br />
+        <a asp-action="Index" class="btn btn-light">العودة</a>
+        <input type="submit" value="اضافة" class="btn btn-primary" />
+    </form>
+    @section ValidationScriptSection {
+        <partial name="_ValidationScriptsPartial" />}
+</div>
+
