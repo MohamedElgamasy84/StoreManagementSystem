@@ -118,7 +118,7 @@ Open `appsettings.json` and update the connection string:
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=YOUR_SERVER;Database=Store;Integrated Security=true;TrustServerCertificate=True;"
+    "DefaultConnection": "Server=GAMASY;Database=Store;Integrated Security=true;TrustServerCertificate=True;"
   }
 }
 ```
